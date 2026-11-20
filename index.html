@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>Aryan App</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b1020;color:#eef2ff;height:100dvh;display:flex;justify-content:center}
+.app{width:100%;max-width:760px;display:flex;flex-direction:column;background:#0b1020}
+header{padding:16px 18px;border-bottom:1px solid #263047;display:flex;align-items:center;gap:12px}
+.logo{width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,#8b5cf6,#22d3ee);display:grid;place-items:center;font-weight:800}
+.title{font-weight:700;font-size:18px}.sub{font-size:12px;color:#9ca3af}
+#messages{flex:1;overflow:auto;padding:20px 16px;display:flex;flex-direction:column;gap:14px}
+.welcome{margin:auto;text-align:center;max-width:400px;color:#cbd5e1}.welcome h1{font-size:26px;color:white;margin:10px 0}.welcome p{line-height:1.5}
+.msg{max-width:88%;padding:12px 15px;border-radius:18px;white-space:pre-wrap;line-height:1.5}.user{align-self:flex-end;background:#5141a8;border-bottom-right-radius:5px}.bot{align-self:flex-start;background:#172033;border:1px solid #263047;border-bottom-left-radius:5px}
+.suggestions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}.suggestions button{background:#131c30;color:#dbeafe;border:1px solid #34415d;border-radius:20px;padding:9px 12px}
+footer{padding:12px 12px calc(12px + env(safe-area-inset-bottom));border-top:1px solid #263047}.inputrow{display:flex;gap:8px;background:#131c30;border:1px solid #34415d;border-radius:24px;padding:6px 8px 6px 14px}
+input{flex:1;min-width:0;background:transparent;color:white;border:0;outline:none;font-size:16px}input::placeholder{color:#94a3b8}
+.send{border:0;border-radius:50%;width:42px;height:42px;background:#8b5cf6;color:white;font-size:18px;font-weight:bold}.note{text-align:center;color:#738099;font-size:11px;padding-top:8px}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="logo">AI</div><div><div class="title">Aryan App</div><div class="sub">Your study assistant · Demo mode</div></div></header>
+<main id="messages">
+<div class="welcome" id="welcome"><div style="font-size:42px">✨</div><h1>नमस्कार!</h1><p>मी Aryan App — तुझा AI अभ्यास सहाय्यक. मला प्रश्न विचार किंवा खालील विषयांपासून सुरुवात कर.</p>
+<div class="suggestions"><button onclick="suggest('मला गणित समजावून सांग')">📐 गणित</button><button onclick="suggest('CET साठी अभ्यास योजना बनव')">🎯 CET तयारी</button><button onclick="suggest('Science मधील महत्त्वाचे प्रश्न दे')">🔬 Science</button></div></div>
+</main>
+<footer><div class="inputrow"><input id="prompt" placeholder="तुझा प्रश्न लिही..." autocomplete="off"><button class="send" onclick="send()">➤</button></div><div class="note">Demo version · पुढे सुरक्षित AI सेवा जोडावी लागेल</div></footer>
+</div>
+<script>
+const messages=document.getElementById('messages'), input=document.getElementById('prompt');
+function suggest(t){input.value=t;send()}
+function add(text,who){let w=document.getElementById('welcome');if(w)w.remove();let d=document.createElement('div');d.className='msg '+who;d.textContent=text;messages.appendChild(d);messages.scrollTop=messages.scrollHeight}
+function reply(q){
+let s=q.toLowerCase();
+if(s.includes('cet')) return 'CET तयारीसाठी आधी high-priority chapters, मग रोज MCQ practice आणि आठवड्याला mock test असा अभ्यास करूया. हा demo आहे—खऱ्या AI शी जोडल्यावर तुझ्या प्रश्नानुसार सविस्तर उत्तर मिळेल.';
+if(s.includes('गणित')||s.includes('math')) return 'गणिताचा प्रश्न इथे लिही! Demo mode मध्ये मी ठराविक नमुना उत्तर देतो. पुढील आवृत्तीत AI जोडून पायरी-पायरीने सोडवता येईल.';
+if(s.includes('science')) return 'Science साठी chapter-wise notes, definitions आणि प्रश्नसंच तयार करू शकतो. खऱ्या AI connection नंतर प्रश्नानुसार उत्तर मिळेल.';
+return 'तुझा प्रश्न मिळाला: “'+q+'”\\nहा सध्या demo chat आहे. पुढच्या टप्प्यात सुरक्षित AI API/backend जोडल्यावर हा App खऱ्या AI प्रमाणे उत्तर देईल.';
+}
+function send(){let q=input.value.trim();if(!q)return;add(q,'user');input.value='';setTimeout(()=>add(reply(q),'bot'),350)}
+input.addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+</script>
+</body></html>
